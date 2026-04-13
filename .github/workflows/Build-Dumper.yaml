@@ -1,10 +1,6 @@
 name: Build Il2CppDumper
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
   workflow_dispatch:
 
 env:
@@ -18,19 +14,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Clone Il2CppDumper
+      run: git clone https://github.com/roytu/Il2CppDumper.git
+
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore Il2CppDumper.sln
+      run: dotnet restore Il2CppDumper/Il2CppDumper.sln
 
     - name: Build solution
-      run: dotnet build Il2CppDumper.sln --configuration Release --no-restore
+      run: dotnet build Il2CppDumper/Il2CppDumper.sln --configuration Release --no-restore
 
     - name: Publish Il2CppDumper
-      run: dotnet publish Il2CppDumper/Il2CppDumper.csproj -c Release -o out
+      run: dotnet publish Il2CppDumper/Il2CppDumper/Il2CppDumper.csproj -c Release -o out
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
