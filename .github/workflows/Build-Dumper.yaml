@@ -1,0 +1,36 @@
+name: Build Il2CppDumper
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore Il2CppDumper.sln
+
+    - name: Build solution
+      run: dotnet build Il2CppDumper.sln --configuration Release --no-restore
+
+    - name: Publish Il2CppDumper
+      run: dotnet publish Il2CppDumper/Il2CppDumper.csproj -c Release -o out
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Il2CppDumper-build
+        path: out
