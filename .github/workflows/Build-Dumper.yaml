@@ -28,8 +28,8 @@ jobs:
     - name: Build solution
       run: dotnet build Il2CppDumper/Il2CppDumper.sln --configuration Release --no-restore
 
-    - name: Publish Il2CppDumper
-      run: dotnet publish Il2CppDumper/Il2CppDumper/Il2CppDumper.csproj -c Release -o out
+    - name: Publish Il2CppDumper (net8.0)
+      run: dotnet publish Il2CppDumper/Il2CppDumper/Il2CppDumper.csproj -c Release -f net8.0 -o out
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
